@@ -1,3 +1,5 @@
+require 'more_money'
+
 module CollectiveIdea #:nodoc:
   module Acts
     module Money #:nodoc:
