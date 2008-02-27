@@ -1,5 +1,3 @@
-require 'money'
-
 module CollectiveIdea #:nodoc:
   module Acts
     module Money #:nodoc:
@@ -21,7 +19,7 @@ module CollectiveIdea #:nodoc:
   end
 end
 
-class Money
+class MoreMoney::Money
   cattr_accessor :zero
   
   def -@
