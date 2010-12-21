@@ -12,6 +12,11 @@ class MoneyTest < Test::Unit::TestCase
     money :price
   end
 
+  class Donation < ActiveRecord::Base
+    acts_as_money
+    money :amount, :allow_nil => true
+  end
+
   class Service < ActiveRecord::Base
     acts_as_money
     money :price, :cents => :service_cents, :currency => :service_currency 
@@ -32,6 +37,11 @@ class MoneyTest < Test::Unit::TestCase
       create_table :services do |t|
         t.integer :service_cents
         t.string  :service_currency
+      end
+
+      create_table :donations do |t|
+        t.integer :cents
+        t.string  :currency
       end
     end
   
@@ -65,7 +75,12 @@ class MoneyTest < Test::Unit::TestCase
     assert_equal(product.price.cents, 0)
     assert_equal(product.price.currency, Money.default_currency)
   end
-  
+
+  def test_allow_nil
+    donation = Donation.new
+    assert_nil(donation.amount)
+  end
+
   def test_it_serializes_amount_with_named_columns
     service = Service.create(:price => Money.new(100, "GBP"))
     service = Service.find(service.id)

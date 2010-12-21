@@ -18,6 +18,7 @@ module ActsAsMoney #:nodoc:
     def money(name, options = {})
       composed_of name,  {
         :class_name => 'Money',
+        :allow_nil => options[:allow_nil],
         :mapping => [
           [(options[:cents] || :cents).to_s, 'cents'],
           [(options[:currency] || :currency).to_s, 'currency_as_string']
