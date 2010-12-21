@@ -1,57 +1,32 @@
 require 'money'
 
-module CollectiveIdea #:nodoc:
-  module Acts
-    module Money #:nodoc:
-      def self.included(base) #:nodoc:
-        base.extend ClassMethods
-      end
-
-      module ClassMethods
-        def money(name, options = {})
-          options = {:cents => :cents, :currency => :currency}.merge(options)
-          mapping = [[options[:cents].to_s, 'cents']]
-          mapping << [options[:currency].to_s, 'currency'] if options[:currency]
-          
-          composed_of name, :class_name => 'Money', :allow_nil => true, :mapping => mapping do |m|
-            m.to_money
-          end
-        end
-      end
+class ActiveRecord::Base
+  class << self
+    def acts_as_money
+      include(ActsAsMoney)
     end
   end
 end
 
-class Money
-  cattr_accessor :zero
-  
-  def -@
-    Money.new(-@cents, @currency)
+
+module ActsAsMoney #:nodoc:
+  def self.included(base) #:nodoc:
+    base.extend ClassMethods
   end
-  
-  def blank?
-    zero?
-  end
-  
-  def format_with_zero(*rules)
-    rules = rules.flatten
-    options = {}
-    options.update rules.pop if rules.last.is_a? Hash
-    
-    if cents == 0
-      if options[:zero]
-        options[:zero]
-      elsif self.class.zero
-        self.class.zero
-      else
-        format = "$0"
-        format << ".00" unless rules.include?(:no_cents)
-        format
-      end
-    else
-      format_with_free(rules)
+
+  module ClassMethods
+    def money(name, options = {})
+      composed_of name,  {
+        :class_name => 'Money',
+        :mapping => [
+          [(options[:cents] || :cents).to_s, 'cents'],
+          [(options[:currency] || :currency).to_s, 'currency_as_string']
+        ],
+        :constructor => lambda {|cents, currency| Money.new(cents || 0, currency || Money.default_currency)}
+      }      
     end
   end
-  alias_method :format_with_free, :format
-  alias_method :format, :format_with_zero
 end
+
+
+
