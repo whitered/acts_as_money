@@ -23,7 +23,7 @@ module ActsAsMoney #:nodoc:
           [(options[:cents] || :cents).to_s, 'cents'],
           [(options[:currency] || :currency).to_s, 'currency_as_string']
         ],
-        :constructor => lambda {|cents, currency| Money.new(cents || 0, currency || Money.default_currency)}
+        :constructor => lambda {|cents, currency| options[:allow_nil] && !cents ? nil : Money.new(cents || 0, currency || Money.default_currency)}
       }      
     end
   end
