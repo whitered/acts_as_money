@@ -1,7 +1,7 @@
 Money
 =====
 
-acts_as_money is a fairly trivial plugin that makes it easier to work with the money gem.
+acts_as_money is a fairly trivial plugin that makes it easier to work with the money gem. It's available in Rubygems - just 'gem install acts_as_money'.
 
   class Product < ActiveRecord::Base
     money :price
