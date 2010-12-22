@@ -81,6 +81,24 @@ class MoneyTest < Test::Unit::TestCase
     assert_nil(donation.amount)
   end
 
+  def test_instantiation_with_integer
+    product = Product.create(:price => 100)
+    assert_equal(product.price.cents, 100)
+    assert_equal(product.price.currency, Money.default_currency)
+  end
+  
+  def test_instantiation_with_float
+    product = Product.create(:price => 100.50)
+    assert_equal(product.price.cents, 10050)
+    assert_equal(product.price.currency, Money.default_currency)
+  end
+
+  def test_instantiation_with_string
+    product = Product.create(:price => "100.50")
+    assert_equal(product.price.cents, 10050)
+    assert_equal(product.price.currency, Money.default_currency)
+  end
+
   def test_it_serializes_amount_with_named_columns
     service = Service.create(:price => Money.new(100, "GBP"))
     service = Service.find(service.id)
