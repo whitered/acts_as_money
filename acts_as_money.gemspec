@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.date = %q{2010-12-22}
   s.email = %q{tim@timcowlishaw.co.uk}
   s.extra_rdoc_files = ["README"]
-  s.files = ["README", "test", "tasks", "lib/acts_as_money.rb"]
+  s.files = ["README", "test", "lib/acts_as_money.rb"]
   s.has_rdoc = false
   s.homepage = %q{http://github.com/timcowlishaw/acts_as_money}
   s.rdoc_options = ["--main", "README"]
