@@ -29,9 +29,9 @@ module ActsAsMoney #:nodoc:
           when Fixnum
             Money.new(value, Money.default_currency)
           when Float
-            Money.new((value * 100).to_i, Money.default_currency)
+            Money.new((value * 100).to_d, Money.default_currency)
           when String
-            Money.new((value.to_f * 100).to_i, Money.default_currency)
+            Money.new((value.to_f * 100).to_d, Money.default_currency)
           else
             value
           end

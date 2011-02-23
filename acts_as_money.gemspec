@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--main", "README"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{A fairly trivial plugin allowing easy serialisation of Money values (from the money gem) as attributes on activerecord objects}
+  s.summary = %q{A fairly trivial gem allowing easy serialisation of Money values (from the money gem) as attributes on activerecord objects}
+  s.add_development_dependency('sqlite3')
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
