@@ -2,7 +2,7 @@ require 'test/unit'
 require 'rubygems'
 require 'active_record'
 require 'sqlite3'
-require File.dirname(__FILE__) + "/../lib/acts_as_money"
+require File.dirname(File.expand_path(__FILE__)) + "/../lib/acts_as_money"
 
 
 class MoneyTest < Test::Unit::TestCase
