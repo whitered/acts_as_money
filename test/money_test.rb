@@ -99,6 +99,12 @@ class MoneyTest < Test::Unit::TestCase
     assert_equal(product.price.currency, Money.default_currency)
   end
 
+  def test_instantiation_with_roundable_float
+    product = Product.create(:price => 32.66)
+    assert_equal(product.price.cents, 3266)
+    assert_equal(product.price.currency, Money.default_currency)
+  end
+
   def test_instantiation_with_string
     product = Product.create(:price => "100.50")
     assert_equal(product.price.cents, 10050)

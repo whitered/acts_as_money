@@ -9,13 +9,14 @@ Gem::Specification.new do |s|
   s.date = %q{2011-01-03}
   s.email = %q{tim@timcowlishaw.co.uk}
   s.extra_rdoc_files = ["README"]
-  s.files = ["README", "test", "tasks", "lib/acts_as_money.rb"]
+  s.files = ["README", "test", "lib/acts_as_money.rb"]
   s.has_rdoc = false
   s.homepage = %q{http://github.com/timcowlishaw/acts_as_money}
   s.rdoc_options = ["--main", "README"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{A fairly trivial plugin allowing easy serialisation of Money values (from the money gem) as attributes on activerecord objects}
+  s.summary = %q{A fairly trivial gem allowing easy serialisation of Money values (from the money gem) as attributes on activerecord objects}
+  s.add_development_dependency('sqlite3')
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
