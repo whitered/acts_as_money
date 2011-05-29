@@ -1,3 +1,2 @@
 require 'acts_as_money'
-
-ActiveRecord::Base.send :include, CollectiveIdea::Acts::Money
+#ActiveRecord::Base.send :include, ActsAsMoney

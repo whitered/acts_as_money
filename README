@@ -1,7 +1,8 @@
 Money
 =====
+NOTE: this fork fixes the init.rb file.
 
-acts_as_money is a fairly trivial plugin that makes it easier to work with the money gem. It's available in Rubygems - just 'gem install acts_as_money'.
+acts_as_money is a plugin that makes it easier to work with the money gem. It's available in Rubygems - just 'gem install acts_as_money'.
 
   class Product < ActiveRecord::Base
     acts_as_money
