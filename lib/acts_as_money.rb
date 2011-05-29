@@ -26,16 +26,13 @@ module ActsAsMoney #:nodoc:
         :constructor => lambda {|cents, currency| options[:allow_nil] && !cents ? nil : Money.new(cents || 0, currency || Money.default_currency)},
         :converter => lambda {  |value|
           case value
-          when Fixnum
-            Money.new(value, Money.default_currency)
-          when Float
-            Money.new((value * 100).to_d, Money.default_currency)
+          when Fixnum, Float
+            Money.new((value * 100.0).to_d, Money.default_currency)
           when String
             Money.new((value.to_f * 100).to_d, Money.default_currency)
           else
             value
           end
-    
         }
       }      
     end
