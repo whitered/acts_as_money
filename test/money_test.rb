@@ -54,26 +54,26 @@ class MoneyTest < Test::Unit::TestCase
   def test_it_serializes_amount
     product = Product.create(:price => Money.new(100, "GBP"))
     product = Product.find(product.id)
-    assert_equal(product.cents, product.price.cents)
+    assert_equal(product.price.cents, product.cents)
   end
 
   def test_it_serializes_currency
     product = Product.create(:price => Money.new(100, "GBP"))
     product = Product.find(product.id)
-    assert_equal(product.currency, product.price.currency.iso_code)
+    assert_equal(product.price.currency.iso_code, product.currency)
   end
 
   def test_it_unserializes_money_object
     product = Product.create(:cents =>200, :currency => "USD")
     product = Product.find(product.id)
-    assert_equal(product.currency, product.price.currency.iso_code)
-    assert_equal(product.cents, product.price.cents)
+    assert_equal(product.price.currency.iso_code, product.currency)
+    assert_equal(product.price.cents, product.cents)
   end
 
   def test_default_value
     product = Product.new
-    assert_equal(product.price.cents, 0)
-    assert_equal(product.price.currency, Money.default_currency)
+    assert_equal(0, product.price.cents)
+    assert_equal(Money.default_currency, product.price.currency)
   end
 
   def test_allow_nil
@@ -83,51 +83,63 @@ class MoneyTest < Test::Unit::TestCase
 
   def test_instantiation_with_integer
     product = Product.create(:price => 100)
-    assert_equal(product.price.cents, 10000)
-    assert_equal(product.price.currency, Money.default_currency)
+    assert_equal(10000, product.price.cents)
+    assert_equal(Money.default_currency, product.price.currency)
   end
  
   def test_instantiation_with_zero
     product = Product.create(:price => 0)
-    assert_equal(product.price.cents, 0)
-    assert_equal(product.price.currency, Money.default_currency)
+    assert_equal(0, product.price.cents)
+    assert_equal(Money.default_currency, product.price.currency)
   end
 
   def test_instantiation_with_float
     product = Product.create(:price => 100.50)
-    assert_equal(product.price.cents, 10050)
-    assert_equal(product.price.currency, Money.default_currency)
+    assert_equal(10050, product.price.cents)
+    assert_equal(Money.default_currency, product.price.currency)
   end
 
   def test_instantiation_with_roundable_float
     product = Product.create(:price => 32.66)
-    assert_equal(product.price.cents, 3266)
-    assert_equal(product.price.currency, Money.default_currency)
+    assert_equal(3266, product.price.cents)
+    assert_equal(Money.default_currency, product.price.currency)
   end
 
   def test_instantiation_with_string
     product = Product.create(:price => "100.50")
-    assert_equal(product.price.cents, 10050)
-    assert_equal(product.price.currency, Money.default_currency)
+    assert_equal(10050, product.price.cents)
+    assert_equal(Money.default_currency, product.price.currency)
   end
 
   def test_it_serializes_amount_with_named_columns
     service = Service.create(:price => Money.new(100, "GBP"))
     service = Service.find(service.id)
-    assert_equal(service.service_cents, service.price.cents)
+    assert_equal(service.price.cents, service.service_cents)
   end
 
   def test_it_serializes_currency_with_named_columns
     service = Service.create(:price => Money.new(100, "GBP"))
     service = Service.find(service.id)
-    assert_equal(service.service_currency, service.price.currency.iso_code)
+    assert_equal(service.price.currency.iso_code, service.service_currency)
   end
 
   def test_it_unserializes_money_object_with_named_columns
     service = Service.create(:service_cents =>200, :service_currency => "USD")
     service = Service.find(service.id)
-    assert_equal(service.service_currency, service.price.currency.iso_code)
-    assert_equal(service.service_cents, service.price.cents)
+    assert_equal(service.price.currency.iso_code, service.service_currency)
+    assert_equal(service.price.cents, service.service_cents)
+  end
+
+  def test_it_preserves_preinitialized_currency
+    product = Product.create(:currency => 'EUR')
+    product.price = 100
+    assert_equal(100.to_money(:eur), product.price)
+  end
+
+  def test_it_overwrites_obviously_defined_currency
+    product = Product.create(:currency => 'EUR')
+    product.price = 100.to_money(:gbp)
+    assert_equal(100.to_money(:gbp), product.price)
   end
 
 end

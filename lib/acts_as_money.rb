@@ -15,26 +15,27 @@ module ActsAsMoney #:nodoc:
   end
 
   module ClassMethods
+
     def money(name, options = {})
-      composed_of name,  {
-        :class_name => 'Money',
-        :allow_nil => options[:allow_nil],
-        :mapping => [
-          [(options[:cents] || :cents).to_s, 'cents'],
-          [(options[:currency] || :currency).to_s, 'currency_as_string']
-        ],
-        :constructor => lambda {|cents, currency| options[:allow_nil] && !cents ? nil : Money.new(cents || 0, currency || Money.default_currency)},
-        :converter => lambda {  |value|
-          case value
-          when Fixnum, Float
-            Money.new((value * 100.0).to_d, Money.default_currency)
-          when String
-            Money.new((value.to_f * 100).to_d, Money.default_currency)
-          else
+      currency_field = (options[:currency] || 'currency').to_s
+      cents_field = (options[:cents] || :cents).to_s
+      check_nil = options[:allow_nil] ? "#{cents_field}.nil? ? nil : " : ''
+      class_eval %{
+        def #{name} 
+          #{check_nil}Money.new(#{cents_field} || 0, #{currency_field} || Money.default_currency)
+        end
+
+        def #{name}= value
+          money = if value.is_a?(Money)
             value
+          elsif value.respond_to?(:to_money)
+            value.to_money(#{currency_field} || Money.default_currency)
           end
-        }
-      }      
+
+          self[:#{cents_field}] = money.try(:cents)
+          self[:#{currency_field}] = money.try(:currency_as_string)
+        end
+      }
     end
   end
 end
