@@ -142,4 +142,10 @@ class MoneyTest < Test::Unit::TestCase
     assert_equal(100.to_money(:gbp), product.price)
   end
 
+  def test_it_handles_empty_currency
+    product = Product.create(:currency => '')
+    product.price = 100
+    assert_equal(100.to_money(), product.price)
+  end
+
 end

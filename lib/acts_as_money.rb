@@ -29,7 +29,7 @@ module ActsAsMoney #:nodoc:
           money = if value.is_a?(Money)
             value
           elsif value.respond_to?(:to_money)
-            value.to_money(#{currency_field} || Money.default_currency)
+            value.to_money(#{currency_field}.nil? || #{currency_field}.empty? ? Money.default_currency : #{currency_field})
           end
 
           self[:#{cents_field}] = money.try(:cents)
