@@ -83,7 +83,7 @@ class MoneyTest < Test::Unit::TestCase
 
   def test_instantiation_with_integer
     product = Product.create(:price => 100)
-    assert_equal(product.price.cents, 100)
+    assert_equal(product.price.cents, 10000)
     assert_equal(product.price.currency, Money.default_currency)
   end
  
